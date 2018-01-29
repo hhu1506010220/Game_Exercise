@@ -1,6 +1,8 @@
 import sys
 import pygame
-from ._class.settings import Settings
+from _class.settings import Settings
+from _class.ship import Ship
+import game_function as func
 
 def run_game():
     pygame.init()
@@ -12,19 +14,12 @@ def run_game():
     )
     pygame.display.set_caption("雷电")
 
+    ship = Ship(screen)
 
     # 开始游戏
     while True:
-
-            # 监视键盘和鼠标事件
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
-
-            #刷新屏幕
-            screen.fill(settings.bg_color)
-
-            #设为可见
-            pygame.display.flip()
+            func.check_events(ship)
+            ship.update()
+            func.update_screen(settings,screen,ship)
 
 run_game()
