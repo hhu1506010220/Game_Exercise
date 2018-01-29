@@ -7,7 +7,7 @@ class Settings():
         # 界面
         self.screen_width = 800
         self.screen_height = 600
-        self.bg_color = (50,50,50)
+        self.bg_color = (100,60,50)
 
         # 飞船
         self.ship_speed = 1.5
@@ -17,3 +17,5 @@ class Settings():
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = (150,150,150)
+
+        # 靶子

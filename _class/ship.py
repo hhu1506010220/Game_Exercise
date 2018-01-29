@@ -17,9 +17,12 @@ class Ship():
         # 移动标志
         self.moving_right = False
         self.moving_left  = False
+        self.moving_down = False
+        self.moving_up = False
 
         # 设置存储小数值
         self.center = float(self.rect.centerx)
+        # self.y = float(self.rect.y)
 
     def update(self):
         """根据移动标志左右移动"""
@@ -29,6 +32,15 @@ class Ship():
         if self.moving_left:
             # 向左移动
             self.center = max(self.center - self.settings.ship_speed , 0)
+
+        # if self.moving_down:
+        #     # 向下移动
+        #     self.y = max(self.y - self.settings.ship_speed , 0)
+        # if self.moving_up:
+        #     # 向上移动
+        #     self.y = min(self.y + self.settings.ship_speed , self.screen_rect.right)
+        # self.rect.y = self.y
+
         self.rect.centerx = self.center
 
     def blitme(self):

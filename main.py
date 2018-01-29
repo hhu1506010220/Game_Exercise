@@ -1,7 +1,7 @@
-import sys
 import pygame
 from _class.settings import Settings
 from _class.ship import Ship
+from _class.alien import Alien
 import game_function as func
 from pygame.sprite import Group
 
@@ -17,6 +17,8 @@ def run_game():
 
     ship = Ship(screen,settings)
     bullets = Group()
+    aliens =  Group()
+    func.create_fleet(settings,screen,aliens)
 
     # 开始游戏
     while True:
@@ -24,6 +26,6 @@ def run_game():
         ship.update()
         bullets.update()
         func.del_bullet(bullets)
-        func.update_screen(settings,screen,ship,bullets)
+        func.update_screen(settings,screen,ship,aliens,bullets)
 
 run_game()
