@@ -1,6 +1,7 @@
 import sys
 import pygame
 import random
+from time import sleep
 from _class.bullet import Bullet
 from _class.alien import Alien
 
@@ -53,10 +54,18 @@ def fire_bullet(settings , screen ,ship ,bullets):
     new_bullet = Bullet(settings, screen, ship)
     bullets.add(new_bullet)
 
-def del_bullet(bullets):
+def del_bullet(settings,screen,ship,aliens,bullets):
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
+    check_isBoom(settings,screen,ship,aliens,bullets)
+
+def check_isBoom(settings,screen,ship,aliens,bullets):
+    # 若有子弹击中外星人
+    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    if len(aliens) == 0:
+        bullets.empty()
+        create_fleet(settings, screen, ship, aliens)
 
 def get_aline_num(settings,alien_width):
     available_x_space = settings.screen_width - 2 * alien_width
@@ -88,10 +97,29 @@ def create_fleet(settings,screen,ship,aliens):
         for alien_number in range(alien_number_x):
             create_alien(settings,screen,aliens,alien_number,row_number)
 
-def update_aliens(settings,aliens):
+
+def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
+    # 被撞到
+    if stats.ships_left > 0:
+        stats.ships_left -= 1
+        aliens.empty()
+        bullets.empty()
+        # 创建一堆新的靶子，飞船也重置
+        create_fleet(ai_settings, screen, ship, aliens)
+        ship.center_ship()
+        sleep(0.5)
+    else:
+        stats.game_active = False
+
+def update_aliens(settings,status,screen,ship,aliens,bullets):
     # 检查是否有外星人碰到边缘
     check_fleet_edges(settings,aliens)
     aliens.update()
+    # 如果和飞船发生碰撞则结束
+    if pygame.sprite.spritecollideany(ship,aliens):
+        ship_hit(settings,status,screen,ship,aliens,bullets)
+    # 检查是否有靶子到达底部
+    check_aliens_bottom(settings,status,screen,ship,aliens,bullets)
 
 def change_fleet_direction(settings, aliens):
     """Drop the entire fleet, and change the fleet's direction."""
@@ -100,8 +128,16 @@ def change_fleet_direction(settings, aliens):
     settings.fleet_direction *= -1
 
 def check_fleet_edges(settings, aliens):
-    """Respond appropriately if any aliens have reached an edge."""
+    # 是否有碰到边缘的靶子
     for alien in aliens.sprites():
         if alien.check_edges():
             change_fleet_direction(settings, aliens)
+            break
+
+def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
+    # 是否有碰到底部的靶子
+    screen_rect = screen.get_rect()
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= screen_rect.bottom:
+            ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
             break
