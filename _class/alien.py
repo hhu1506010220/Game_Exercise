@@ -23,3 +23,15 @@ class Alien(Sprite):
     def blitme(self):
         # 显示靶子
         self.screen.blit(self.image , self.rect)
+
+    def update(self):
+        self.x += (self.settings.alien_speed * self.settings.fleet_direction)
+        self.rect.x = self.x
+
+    def check_edges(self):
+        screen_rect = self.screen.get_rect()
+        if self.rect.right >= screen_rect.right:
+            return True
+        elif self.rect.left <= 0:
+            return True
+

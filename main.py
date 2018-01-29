@@ -18,7 +18,7 @@ def run_game():
     ship = Ship(screen,settings)
     bullets = Group()
     aliens =  Group()
-    func.create_fleet(settings,screen,aliens)
+    func.create_fleet(settings,screen,ship,aliens)
 
     # 开始游戏
     while True:
@@ -26,6 +26,7 @@ def run_game():
         ship.update()
         bullets.update()
         func.del_bullet(bullets)
+        func.update_aliens(settings,aliens)
         func.update_screen(settings,screen,ship,aliens,bullets)
 
 run_game()

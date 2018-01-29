@@ -58,18 +58,50 @@ def del_bullet(bullets):
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
 
-def create_fleet(settings,screen,aliens):
-    # 创建靶子群
-    alien = Alien(settings,screen)
-    alien_width = alien.rect.width
+def get_aline_num(settings,alien_width):
     available_x_space = settings.screen_width - 2 * alien_width
     max_alien_num = int(available_x_space / (2 * alien_width))
+    return max_alien_num
 
-    for alien_number in range(max_alien_num):
-        alien = Alien(settings ,screen)
-        alien.x = alien_width + 2 * alien_width * alien_number
-        alien.rect.x = alien.x
-        # 随机生成外星人
-        random_seed = random.randint(1,10)
-        if random_seed<=5:
-            aliens.add(alien)
+def get_row_num(settings,ship_height,alien_height):
+    available_y_space = (settings.screen_height - (3 * alien_height) - ship_height)
+    row_num = int(available_y_space / (2 * alien_height))
+    return row_num
+
+def create_alien(settings,screen,aliens,alien_num,row_num):
+    alien = Alien(settings,screen)
+    alien_width = alien.rect.width
+    alien.x = alien_width + 2 * alien_width * alien_num
+    alien.rect.x = alien.x
+    alien.rect.y = alien.rect.height + 2* alien.rect.height * row_num
+    # 随机生成外星人
+    random_seed = random.randint(1, 10)
+    if random_seed <= 5:
+        aliens.add(alien)
+
+def create_fleet(settings,screen,ship,aliens):
+    # 创建靶子群
+    alien = Alien(settings,screen)
+    alien_number_x = get_aline_num(settings,alien.rect.width)
+    row_number_y = get_row_num(settings,ship.rect.height,alien.rect.height)
+    for row_number in range(row_number_y):
+        for alien_number in range(alien_number_x):
+            create_alien(settings,screen,aliens,alien_number,row_number)
+
+def update_aliens(settings,aliens):
+    # 检查是否有外星人碰到边缘
+    check_fleet_edges(settings,aliens)
+    aliens.update()
+
+def change_fleet_direction(settings, aliens):
+    """Drop the entire fleet, and change the fleet's direction."""
+    for alien in aliens.sprites():
+        alien.rect.y += settings.fleet_drop_speed
+    settings.fleet_direction *= -1
+
+def check_fleet_edges(settings, aliens):
+    """Respond appropriately if any aliens have reached an edge."""
+    for alien in aliens.sprites():
+        if alien.check_edges():
+            change_fleet_direction(settings, aliens)
+            break
