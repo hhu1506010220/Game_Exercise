@@ -32,6 +32,7 @@ def check_play_button(settings,screen,status,play_button,ship,aliens,bullets,mou
     if button_clicked and not status.game_active:
         pygame.mouse.set_visible(False)
         # 重置
+        settings.init_speed()
         status.reset_status()
         status.game_active = True
 
@@ -86,6 +87,7 @@ def check_isBoom(settings,screen,ship,aliens,bullets):
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
     if len(aliens) == 0:
         bullets.empty()
+        settings.increase_speed()
         create_fleet(settings, screen, ship, aliens)
 
 def get_aline_num(settings,alien_width):
