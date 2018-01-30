@@ -1,3 +1,5 @@
+import pygame
+
 class Settings():
     """存储所有类"""
 
@@ -8,6 +10,8 @@ class Settings():
         self.screen_width = 1000
         self.screen_height = 600
         self.bg_color = (100,60,50)
+        # self.background_image = "image/background.jpg"
+        # self.background = pygame.image.load(self.background_image).convert()
 
         # 飞船
         self.ship_speed = 1.5

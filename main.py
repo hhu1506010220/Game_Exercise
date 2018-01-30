@@ -19,7 +19,7 @@ def run_game():
 
     status = GameStatus(settings)
     play_button = Button(settings,screen,"Play")
-    ship = Ship(screen,settings)
+    ship = Ship(settings,screen)
     bullets = Group()
     aliens =  Group()
     scoreboard = Scoreboard(settings,screen,status)
@@ -27,13 +27,13 @@ def run_game():
 
     # 开始游戏
     while True:
-        func.check_events(settings,screen,status,play_button,ship,aliens,bullets)
+        func.check_events(settings,screen,status,scoreboard,play_button,ship,aliens,bullets)
 
         if status.game_active:
             ship.update()
             bullets.update()
             func.del_bullet(settings,screen,status,scoreboard,ship,aliens,bullets)
-            func.update_aliens(settings,status,screen,ship,aliens,bullets)
+            func.update_aliens(settings,screen,status,scoreboard,ship,aliens,bullets)
 
         func.update_screen(settings,screen,status,scoreboard,ship,aliens,bullets,play_button)
 
