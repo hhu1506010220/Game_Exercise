@@ -30,10 +30,10 @@ def check_keyup_events(event,ship):
 def check_play_button(settings,screen,status,play_button,ship,aliens,bullets,mouse_x,mouse_y):
     button_clicked = play_button.rect.collidepoint(mouse_x,mouse_y)
     if button_clicked and not status.game_active:
-        pygame.mouse.set_visible(False)
         # 重置
         settings.init_speed()
-        status.reset_status()
+        pygame.mouse.set_visible(False)
+        status.reset_stats()
         status.game_active = True
 
         # 清空数据
@@ -55,7 +55,7 @@ def check_events(settings,screen,status,play_button,ship,aliens,bullets):
             mouse_x ,mouse_y = pygame.mouse.get_pos()
             check_play_button(settings,screen,status,play_button,ship,aliens,bullets,mouse_x,mouse_y)
 
-def update_screen(settings , screen , status , ship ,aliens ,bullets,play_button):
+def update_screen(settings , screen , status , scoreboard , ship ,aliens ,bullets,play_button):
     # 刷新屏幕
     screen.fill(settings.bg_color)
     # 展示子弹
@@ -64,6 +64,7 @@ def update_screen(settings , screen , status , ship ,aliens ,bullets,play_button
     # 展示飞行物和靶子
     ship.blitme()
     aliens.draw(screen)
+    scoreboard.show_score()
 
     # 如果游戏处于非活跃状态 显示Play按钮
     if not status.game_active:
@@ -76,15 +77,19 @@ def fire_bullet(settings , screen ,ship ,bullets):
     new_bullet = Bullet(settings, screen, ship)
     bullets.add(new_bullet)
 
-def del_bullet(settings,screen,ship,aliens,bullets):
+def del_bullet(settings,screen,status,scordboard,ship,aliens,bullets):
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
-    check_isBoom(settings,screen,ship,aliens,bullets)
+    check_isBoom(settings,screen,status,scordboard,ship,aliens,bullets)
 
-def check_isBoom(settings,screen,ship,aliens,bullets):
+def check_isBoom(settings,screen,status,scordboard,ship,aliens,bullets):
     # 若有子弹击中外星人
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    if collisions:
+        for aliens in collisions.values():
+            status.score += settings.alien_points * len(aliens)
+            scordboard.prep_score()
     if len(aliens) == 0:
         bullets.empty()
         settings.increase_speed()

@@ -26,16 +26,20 @@ class Settings():
         self.fleet_direction = 1
 
         # 游戏加速
-        self.speed_up = 1.1
+        self.speed_up = 1.5
+        self.alien_score = 1.5
         self.init_speed()
 
     def init_speed(self):
-        self.ship_speed = 1.5
-        self.bullet_speed = 3
+        self.ship_speed = 1.25
+        self.bullet_speed = 1
         self.alien_speed = 1
         self.fleet_direction = 1
+        self.alien_points = 50
 
     def increase_speed(self):
         self.ship_speed *= self.speed_up
         self.bullet_speed *= self.speed_up
         self.alien_speed *= self.speed_up
+        self.alien_points = int(self.alien_points * self.alien_score)
+        print(self.alien_points)
