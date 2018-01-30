@@ -10,7 +10,7 @@ class Alien(Sprite):
         self.settings = settings
 
         # 加载靶子图像
-        self.image = pygame.image.load('image/monster.bmp')
+        self.image = pygame.image.load('image/target.png')
         self.rect = self.image.get_rect()
 
         # 初始化位置

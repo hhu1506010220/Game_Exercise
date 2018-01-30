@@ -1,11 +1,10 @@
-import pygame
-from _class.settings import *
-from _class.ship import *
-from _class.game_status import *
 from _class.button import *
+from _class import game_function as func
+from _class.button import *
+from _class.game_status import *
 from _class.scoreboard import *
-import game_function as func
-from pygame.sprite import Group
+from _class.settings import *
+
 
 def run_game():
     pygame.init()
