@@ -18,14 +18,14 @@ class Button():
         # 按钮标签
         self.prep_msg(msg)
 
+    def draw_button(self):
+        # 绘制按钮和文本
+        self.screen.fill(self.button_color, self.rect)
+        self.screen.blit(self.msg_image, self.msg_image_rect)
+
     def prep_msg(self, msg):
         # msg渲染成图像
         self.msg_image = self.font.render(msg, True, self.text_color,
                                           self.button_color)
         self.msg_image_rect = self.msg_image.get_rect()
         self.msg_image_rect.center = self.rect.center
-
-    def draw_button(self):
-        # 绘制按钮和文本
-        self.screen.fill(self.button_color, self.rect)
-        self.screen.blit(self.msg_image, self.msg_image_rect)

@@ -26,6 +26,13 @@ class Ship(Sprite):
         self.center = float(self.rect.centerx)
         # self.y = float(self.rect.y)
 
+    def blitme(self):
+        """在指定位置绘制飞船"""
+        self.screen.blit(self.image,self.rect)
+
+    def center_ship(self):
+        self.center = self.screen_rect.centerx
+
     def update(self):
         """根据移动标志左右移动"""
         if self.moving_right:
@@ -44,10 +51,3 @@ class Ship(Sprite):
         # self.rect.y = self.y
 
         self.rect.centerx = self.center
-
-    def blitme(self):
-        """在指定位置绘制飞船"""
-        self.screen.blit(self.image,self.rect)
-
-    def center_ship(self):
-        self.center = self.screen_rect.centerx
