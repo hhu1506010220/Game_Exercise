@@ -16,6 +16,7 @@ def run_game():
     )
     pygame.display.set_caption("小黑版 Hit the Plane")
 
+    # 生成游戏对象
     status = GameStatus(settings)
     play_button = Button(settings,screen,"Play")
     ship = Ship(settings,screen)
@@ -23,6 +24,10 @@ def run_game():
     aliens =  Group()
     scoreboard = Scoreboard(settings,screen,status)
     func.create_fleet(settings,screen,ship,aliens)
+
+    # 设置背景歌曲
+    pygame.mixer.music.load(settings.music_filename)
+    pygame.mixer.music.play(loops=0, start=0.0)
 
     # 开始游戏
     while True:
