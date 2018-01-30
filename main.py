@@ -14,7 +14,7 @@ def run_game():
     screen = pygame.display.set_mode(
         (settings.screen_width,settings.screen_height)
     )
-    pygame.display.set_caption("雷电")
+    pygame.display.set_caption("小黑版 Hit the Plane")
 
     status = GameStatus(settings)
     play_button = Button(settings,screen,"Play")
