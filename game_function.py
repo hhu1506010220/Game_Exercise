@@ -64,7 +64,7 @@ def check_events(settings,screen,status,scoreboard,play_button,ship,aliens,bulle
 def update_screen(settings , screen , status , scoreboard , ship ,aliens ,bullets,play_button):
     # 刷新屏幕
     # screen.fill(settings.bg_color)
-    screen.blit(settings.background_image,(0,0))
+    screen.blit(settings.background,(0,0))
     # 展示子弹
     for bullet in bullets.sprites():
         bullet.draw_bullet()
