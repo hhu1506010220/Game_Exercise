@@ -27,7 +27,21 @@ def check_keyup_events(event,ship):
     elif event.key == pygame.K_LEFT:
         ship.moving_left = False
 
-def check_events(settings,screen,ship,bullets):
+def check_play_button(settings,screen,status,play_button,ship,aliens,bullets,mouse_x,mouse_y):
+    button_clicked = play_button.rect.collidepoint(mouse_x,mouse_y)
+    if button_clicked and not status.game_active:
+        pygame.mouse.set_visible(False)
+        # 重置
+        status.reset_status()
+        status.game_active = True
+
+        # 清空数据
+        aliens.empty()
+        bullets.empty()
+        create_fleet(settings,screen,ship,aliens)
+        ship.center_ship()
+
+def check_events(settings,screen,status,play_button,ship,aliens,bullets):
     # 监视键盘和鼠标事件
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -36,8 +50,11 @@ def check_events(settings,screen,ship,bullets):
             check_keydown_events(event,settings,screen,ship,bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event,ship)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x ,mouse_y = pygame.mouse.get_pos()
+            check_play_button(settings,screen,status,play_button,ship,aliens,bullets,mouse_x,mouse_y)
 
-def update_screen(settings , screen , ship ,aliens ,bullets):
+def update_screen(settings , screen , status , ship ,aliens ,bullets,play_button):
     # 刷新屏幕
     screen.fill(settings.bg_color)
     # 展示子弹
@@ -46,6 +63,10 @@ def update_screen(settings , screen , ship ,aliens ,bullets):
     # 展示飞行物和靶子
     ship.blitme()
     aliens.draw(screen)
+
+    # 如果游戏处于非活跃状态 显示Play按钮
+    if not status.game_active:
+        play_button.draw_button()
     # 设为可见
     pygame.display.flip()
 
@@ -110,6 +131,7 @@ def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
         sleep(0.5)
     else:
         stats.game_active = False
+        pygame.mouse.set_visible(True)
 
 def update_aliens(settings,status,screen,ship,aliens,bullets):
     # 检查是否有外星人碰到边缘

@@ -2,6 +2,7 @@ import pygame
 from _class.settings import *
 from _class.ship import *
 from _class.game_status import *
+from _class.button import Button
 import game_function as func
 from pygame.sprite import Group
 
@@ -16,7 +17,7 @@ def run_game():
     pygame.display.set_caption("雷电")
 
     status = GameStatus(settings)
-
+    play_button = Button(settings,screen,"Play")
     ship = Ship(screen,settings)
     bullets = Group()
     aliens =  Group()
@@ -24,7 +25,7 @@ def run_game():
 
     # 开始游戏
     while True:
-        func.check_events(settings,screen,ship,bullets)
+        func.check_events(settings,screen,status,play_button,ship,aliens,bullets)
 
         if status.game_active:
             ship.update()
@@ -32,6 +33,6 @@ def run_game():
             func.del_bullet(settings,screen,ship,aliens,bullets)
             func.update_aliens(settings,status,screen,ship,aliens,bullets)
 
-        func.update_screen(settings,screen,ship,aliens,bullets)
+        func.update_screen(settings,screen,status,ship,aliens,bullets,play_button)
 
 run_game()

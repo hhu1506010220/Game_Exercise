@@ -3,8 +3,8 @@ class GameStatus():
         # 初始化统计信息
         self.ai_settings = ai_settings
         self.reset_stats()
-        # 初始为活跃状态
-        self.game_active = True
+        # 初始为非活跃状态
+        self.game_active = False
 
     def reset_stats(self):
         # 重置
